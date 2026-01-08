@@ -1,6 +1,7 @@
 package org.ieseljust.ad.DTO;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import org.ieseljust.ad.Model.Runner;
 
@@ -28,6 +29,10 @@ public class RunnerDTO implements Serializable {
 
 	private String email;
 
+	private LocalDateTime data_creacio;
+
+	private LocalDateTime data_modif;
+
 	public static RunnerDTO convertToDTO(Runner runner) {
 
 		RunnerDTO runnerDTO = new RunnerDTO();
@@ -39,6 +44,8 @@ public class RunnerDTO implements Serializable {
 		runnerDTO.setDni(runner.getDni());
 		runnerDTO.setLocalitat(runner.getLocalitat());
 		runnerDTO.setEmail(runner.getEmail());
+		//runnerDTO.setData_creacio(runner.getData_creacio());
+		//runnerDTO.setData_modif(runner.getData_modif());
 
 		return runnerDTO;
 
@@ -55,6 +62,8 @@ public class RunnerDTO implements Serializable {
 		runner.setDni(runnerDTO.getDni());
 		runner.setLocalitat(runnerDTO.getLocalitat());
 		runner.setEmail(runnerDTO.getEmail());
+		//runner.setData_creacio(runnerDTO.getData_creacio());
+		//runner.setData_modif(runnerDTO.getData_modif());
 
 		return runner;
 
