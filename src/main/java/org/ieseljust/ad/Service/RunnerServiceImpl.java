@@ -21,24 +21,38 @@ public class RunnerServiceImpl implements RunnerService{
 		
 		List<Runner> runners = runnerRepository.findAll();
 		
-		List<RunnerDTO> elsCorredors = new ArrayList<>();
+		List<RunnerDTO> elsCorredorsDTO = new ArrayList<>();
 		
 		//Conversio de Runner a RunnerDTO
 		for (Runner r : runners)
 		{
-			elsCorredors.add(RunnerDTO.convertToDTO(r));
+			elsCorredorsDTO.add(RunnerDTO.convertToDTO(r));
 		}
 		
-		return elsCorredors;
+		return elsCorredorsDTO;
 	}
-	
-	
-	
-	
-	
+
+
+	@Override
+	public List<RunnerDTO> listAllRunnersMenorsEdat(int e) {
+		List<Runner> runners = runnerRepository.menorsEdat(e);
+
+		List<RunnerDTO> elsCorredorsDTO = new ArrayList<>();
+
+		//Conversio de Runner a RunnerDTO
+		for (Runner r : runners)
+		{
+			elsCorredorsDTO.add(RunnerDTO.convertToDTO(r));
+		}
+
+		return elsCorredorsDTO;
+	}
+
+
 	@Override
 	public void saveRunner(RunnerDTO runnerDTO) {
-		runnerRepository.save(RunnerDTO.convertToEntity(runnerDTO));	
+
+		runnerRepository.save(RunnerDTO.convertToEntity(runnerDTO));
 	}
 
 	@Override
@@ -51,12 +65,23 @@ public class RunnerServiceImpl implements RunnerService{
 		if (r.isPresent()) {
 			return RunnerDTO.convertToDTO(r.get());	
 		}
-		
-		
+
 		return null;
 	}
 
-	
+	@Override
+	public RunnerDTO getRunnerByNomYCognoms(String n, String c) {
+		RunnerDTO elCorredor = new RunnerDTO();
+
+		Optional<Runner> r = runnerRepository.findByNomAndCognoms(n,c);
+
+		if (r.isPresent()) {
+			return RunnerDTO.convertToDTO(r.get());
+		}
+
+		return null;
+	}
+
 
 	@Override
 	public void deleteRunner(Long id) {

@@ -5,12 +5,10 @@ import java.util.List;
 import org.ieseljust.ad.DTO.RunnerDTO;
 import org.ieseljust.ad.Service.RunnerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestController
 public class RunnerController {
@@ -30,20 +28,54 @@ public class RunnerController {
 		
     }
 
-	@GetMapping("/corredor/{idRunner}")
-    public RunnerDTO getCorredor(@PathVariable Long idRunner) {
-             
-		return runnerService.getRunnerById(idRunner);
+    @GetMapping("/corredors/menors/{edat}")
+    public ResponseEntity<List<RunnerDTO>> getMenors(@PathVariable int edat) {
+
+        List<RunnerDTO> corredors = runnerService.listAllRunnersMenorsEdat(edat);
+
+        if (corredors.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(corredors, HttpStatus.OK);
+    }
+
+	@GetMapping("/corredor/id/{idRunner}")
+    public ResponseEntity<RunnerDTO> getCorredor(@PathVariable Long idRunner) {
+        RunnerDTO rdto = runnerService.getRunnerById(idRunner);
+
+        if (rdto != null)
+            return new ResponseEntity<>(rdto, HttpStatus.OK);
+		else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
+    }
+
+    @GetMapping("/corredor/nom/{name}/cognoms/{cognoms}")
+    public ResponseEntity<RunnerDTO> getCorredor(@PathVariable String name,
+                                                 @PathVariable String cognoms) {
+        RunnerDTO rdto = runnerService.getRunnerByNomYCognoms(name, cognoms);
+
+        if (rdto != null)
+            return new ResponseEntity<>(rdto, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 	
 	@PostMapping("/newcorredor")
     public void getCorredor(@RequestBody RunnerDTO runnerDTO ) {         
-		runnerService.saveRunner(runnerDTO);		
+
+        runnerService.saveRunner(runnerDTO);
     }
-	
-	
-	
+
+
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<String> handleError(MethodArgumentTypeMismatchException e) {
+        //myLog.warn("Method Argument Type Mismatch", e);
+        String message = String.format("El format de l'argument no és correcte: %s", e.getName());
+        return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
+    }
 	
 	
 	

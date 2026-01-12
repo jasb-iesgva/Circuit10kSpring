@@ -9,8 +9,12 @@ public interface RunnerService {
 	void saveRunner(RunnerDTO runnerDTO);
 	
 	RunnerDTO getRunnerById(Long id);
+
+    RunnerDTO getRunnerByNomYCognoms(String n, String c);
 	
     List<RunnerDTO> listAllRunners();
+
+    List<RunnerDTO> listAllRunnersMenorsEdat(int e);
     
     void deleteRunner(Long id);
 
