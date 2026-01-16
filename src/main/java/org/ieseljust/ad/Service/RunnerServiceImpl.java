@@ -57,9 +57,7 @@ public class RunnerServiceImpl implements RunnerService{
 
 	@Override
 	public RunnerDTO getRunnerById(Long id) {
-		
-		RunnerDTO elCorredor = new RunnerDTO();
-		
+
 		Optional<Runner> r = runnerRepository.findById(id);
 		
 		if (r.isPresent()) {
@@ -71,7 +69,6 @@ public class RunnerServiceImpl implements RunnerService{
 
 	@Override
 	public RunnerDTO getRunnerByNomYCognoms(String n, String c) {
-		RunnerDTO elCorredor = new RunnerDTO();
 
 		Optional<Runner> r = runnerRepository.findByNomAndCognoms(n,c);
 
