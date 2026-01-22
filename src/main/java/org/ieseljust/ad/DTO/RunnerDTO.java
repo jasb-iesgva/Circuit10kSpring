@@ -3,6 +3,9 @@ package org.ieseljust.ad.DTO;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.ieseljust.ad.Model.Categoria;
 import org.ieseljust.ad.Model.Runner;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,6 +32,9 @@ public class RunnerDTO implements Serializable {
 
 	private String email;
 
+	@JsonBackReference
+	private CategoriaDTO categoriaDTO;
+
 	public static RunnerDTO convertToDTO(Runner runner) {
 
 		RunnerDTO runnerDTO = new RunnerDTO();
@@ -40,6 +46,30 @@ public class RunnerDTO implements Serializable {
 		runnerDTO.setDni(runner.getDni());
 		runnerDTO.setLocalitat(runner.getLocalitat());
 		runnerDTO.setEmail(runner.getEmail());
+
+		if (runner.getCategoria() != null)
+		{
+			runnerDTO.setCategoriaDTO(CategoriaDTO.convertToDTO(runner.getCategoria()));
+		}
+
+		return runnerDTO;
+
+	}
+
+	public static RunnerDTO convertToDTO_WCat(Runner runner, CategoriaDTO categoriadto) {
+
+		RunnerDTO runnerDTO = new RunnerDTO();
+
+		runnerDTO.setId(runner.getId());
+		runnerDTO.setNom(runner.getNom());
+		runnerDTO.setCognoms(runner.getCognoms());
+		runnerDTO.setEdat(runner.getEdat());
+		runnerDTO.setDni(runner.getDni());
+		runnerDTO.setLocalitat(runner.getLocalitat());
+		runnerDTO.setEmail(runner.getEmail());
+
+		runnerDTO.setCategoriaDTO(categoriadto);
+
 
 		return runnerDTO;
 

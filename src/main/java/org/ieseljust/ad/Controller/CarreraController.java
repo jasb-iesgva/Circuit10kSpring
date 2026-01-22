@@ -1,7 +1,7 @@
 package org.ieseljust.ad.Controller;
 
-import org.ieseljust.ad.DTO.CategoriaDTO;
-import org.ieseljust.ad.Service.CategoriaService;
+import org.ieseljust.ad.DTO.CarreraDTO;
+import org.ieseljust.ad.Service.CarreraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,50 +11,41 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.List;
 
 @RestController
-public class CategoriaController {
+public class CarreraController {
 	
 	@Autowired
-	CategoriaService categoriaService;
+	CarreraService carreraService;
     
-	@GetMapping("/categorias")
-    public ResponseEntity<List<CategoriaDTO>> getTotsCategories() {
+	@GetMapping("/carreras")
+    public ResponseEntity<List<CarreraDTO>> getTotsCategories() {
 
-        List<CategoriaDTO> categories = categoriaService.listAllCategorias();
+        List<CarreraDTO> lesCarreres = carreraService.listAllCarreras();
 
-        if (categories != null)
-            return new ResponseEntity<>(categories, HttpStatus.OK);
+        if (lesCarreres != null)
+            return new ResponseEntity<>(lesCarreres, HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-	@GetMapping("/categoria/id/{idCategoria}")
-    public ResponseEntity<CategoriaDTO> getcategoria(@PathVariable Long idCategoria) {
-        CategoriaDTO cdto = categoriaService.getCategoriaById(idCategoria);
+	@GetMapping("/carrera/id/{idCarrera}")
+    public ResponseEntity<CarreraDTO> getCarrera(@PathVariable Long idCarrera) {
+        CarreraDTO cdto = carreraService.getCarreraById(idCarrera);
 
         if (cdto != null)
             return new ResponseEntity<>(cdto, HttpStatus.OK);
 		else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
     }
 
-    @GetMapping("/categoria/nom/{name}")
-    public ResponseEntity<CategoriaDTO> getcategoria(@PathVariable String name) {
-        CategoriaDTO cdto = categoriaService.getCategoriaByNom(name);
+    @GetMapping("/carreras/localitat/{name}")
+    public ResponseEntity<List<CarreraDTO>> getCarrera(@PathVariable String name) {
+        List<CarreraDTO> lesCarreres = carreraService.getCarreraByLocalitat(name);
 
-        if (cdto != null)
-            return new ResponseEntity<>(cdto, HttpStatus.OK);
+        if (lesCarreres != null)
+            return new ResponseEntity<>(lesCarreres, HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
     }
-	
-	@PostMapping("/newcategoria")
-    public void getcategoria(@RequestBody CategoriaDTO CategoriaDTO ) {
-        categoriaService.saveCategoria(CategoriaDTO);
-    }
-
-
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleError(MethodArgumentTypeMismatchException e) {

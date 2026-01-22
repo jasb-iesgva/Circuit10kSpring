@@ -22,10 +22,14 @@ public class RunnerController {
     }
 	
 	@GetMapping("/corredors")
-    public List<RunnerDTO> getTotsCorredors() {
-             
-		return runnerService.listAllRunners(); 
-		
+    public ResponseEntity<List<RunnerDTO>> getTotsCorredors() {
+
+        List<RunnerDTO> corredors = runnerService.listAllRunners();
+
+        if (corredors != null)
+            return new ResponseEntity<>(corredors, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/corredors/menors/{edat}")
@@ -67,8 +71,6 @@ public class RunnerController {
 
         runnerService.saveRunner(runnerDTO);
     }
-
-
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleError(MethodArgumentTypeMismatchException e) {
